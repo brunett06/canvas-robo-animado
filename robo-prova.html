@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Robo - Computacao Grafica</title>
+</head>
+<body>
+
+    <canvas id="meu_canvas" width="600" height="400"></canvas>
+
+    <script>
+        // Canvas e contexto
+        var canvas = document.getElementById('meu_canvas');
+        var context = canvas.getContext('2d');
+
+        // Dados do robo
+        var x = 50;
+        var y = 70;
+        var largura = 60;
+        var altura = 50;
+
+        var velocidadeX = 100;
+        var velocidadeY = 100;
+
+        // Momento inicial
+        var anterior = new Date().getTime();
+
+        // Iniciar a animacao
+        requestAnimationFrame(mexerRobo);
+
+        // Funcao de animacao
+        function mexerRobo() {
+
+            // Momento atual
+            var agora = new Date().getTime();
+
+            // Tempo decorrido
+            var decorrido = agora - anterior;
+
+            // Limpar o Canvas
+            context.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Fundo
+            context.save();
+            context.fillStyle = "#0D0F1A";
+            context.fillRect(0, 0, canvas.width, canvas.height);
+            context.restore();
+
+            // Borda do Canvas
+            context.save();
+            context.strokeStyle = "#0D0F1A";
+            context.lineWidth = 2;
+            context.strokeRect(0, 0, canvas.width, canvas.height);
+            context.restore();
+
+            // Antena (circulo)
+            context.save();
+            context.beginPath();
+            context.arc(x + 30, y - 30, 5, 0, Math.PI * 2);
+            context.fillStyle = "#FF3CAC";
+            context.fill();
+            context.restore();
+
+            // Haste da antena (linha)
+            context.save();
+            context.beginPath();
+            context.moveTo(x + 30, y - 25);
+            context.lineTo(x + 30, y);
+            context.strokeStyle = "#7C4DFF";
+            context.lineWidth = 3;
+            context.stroke();
+            context.restore();
+
+            // Cabeca (retangulo)
+            context.save();
+            context.fillStyle = "#00E5FF";
+            context.strokeStyle = "#7C4DFF";
+            context.lineWidth = 3;
+            context.fillRect(x, y, largura, altura);
+            context.strokeRect(x, y, largura, altura);
+            context.restore();
+
+            // Olho esquerdo
+            context.save();
+            context.beginPath();
+            context.arc(x + 18, y + 20, 4, 0, Math.PI * 2);
+            context.fillStyle = "#F5F5F7";
+            context.fill();
+            context.restore();
+
+            // Olho direito
+            context.save();
+            context.beginPath();
+            context.arc(x + 42, y + 20, 4, 0, Math.PI * 2);
+            context.fillStyle = "#F5F5F7";
+            context.fill();
+            context.restore();
+
+            // Boca (linha)
+            context.save();
+            context.beginPath();
+            context.moveTo(x + 20, y + 35);
+            context.lineTo(x + 40, y + 35);
+            context.strokeStyle = "#FF3CAC";
+            context.lineWidth = 3;
+            context.stroke();
+            context.restore();
+
+            // Movimentar o robo
+            x += velocidadeX * decorrido / 1000;
+            y += velocidadeY * decorrido / 1000;
+
+            // Rebater nas paredes laterais
+            if (x + largura >= canvas.width || x <= 0) {
+                velocidadeX = -velocidadeX;
+            }
+
+            // Rebater nas paredes superior e inferior
+            if (y + altura >= canvas.height || y - 35 <= 0) {
+                velocidadeY = -velocidadeY;
+            }
+
+            // Guardar o instante atual
+            anterior = agora;
+
+            // Proximo ciclo da animacao
+            requestAnimationFrame(mexerRobo);
+        }
+    </script>
+
+</body>
+</html>
